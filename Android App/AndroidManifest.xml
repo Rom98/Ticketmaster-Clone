@@ -18,7 +18,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDhbUb8D96p0QyvMTllCQ9EjyIhICIV7Is"/>
+            android:value=""/>
 
         <activity android:name=".event_details"/>
         <activity android:name=".eventData" />

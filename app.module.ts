@@ -39,7 +39,7 @@ import { ImageModalComponent } from './image-modal/image-modal.component';
     HttpClientModule,
     RoundprogressModule,
     AgmCoreModule.forRoot({
-      apiKey:"AIzaSyCd5XFiIA-FI2wo7kgEyOAge9Pb8Cymk3s"
+      apiKey:""
     }),
     NgbModule,
     MatTooltipModule,
