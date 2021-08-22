@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="50dp"
+    tools:context=".FavouriteFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fav_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0dp" />
+
+    <TextView
+        android:id="@+id/no_favdata"
+        android:layout_width="109dp"
+        android:layout_height="39dp"
+        android:layout_gravity="center"
+        android:text="TextView"
+        android:visibility="visible" />
+</FrameLayout>
