@@ -1,0 +1,129 @@
+<!-- .col-xs = class to create grid colums for extra small devices like smartphones
+.col-md = class to create grid colums for medium devices like desktops -->
+
+<div class="container">
+<div class="container bg-light border-dark-class mx-md-auto mx-1  mt-5" style="width: 98%;">
+  <h2 class="main_title">Entertainment Event Ticket Search</h2>
+  <form class="p-2 form-horizontal bg-light needs-validation" name="search_form" [formGroup]="formdata"
+    (ngSubmit)="onSubmit()" novalidate>
+    <div class="form-group row justify-content-left required">
+      <label class="control-label col-sm-2 offset-sm-2" for="validationCustom03">Keyword</label>
+      <div class="col-sm-6">
+        <input type="text" formControlName="Key" name="keyword" class="form-control"
+          placeholder="Enter Artist, Team or Event Name (eg. Lakers)"
+          [ngClass]="{'is-invalid':( keySubmit==true &&formdata.controls.Key.invalid)}" id="validationCustom04"
+          ng-model="user.Keyword" [matAutocomplete]="auto" required>
+        <div class="invalid-feedback">
+          Please enter a keyword.
+        </div>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+            {{option.name}}
+          </mat-option>
+        </mat-autocomplete>
+
+
+      </div>
+    </div>
+    <div class="form-group row justify-content-left">
+      <label class="control-label col-sm-2 offset-sm-2" for="Category">Category</label>
+      <div class="col-sm-4">
+        <select class="form-control" id="Category" ng-model="user.Category" formControlName="Cat">
+          <option [selected]="true" value="Default">All</option>
+          <option value="Music">Music</option>
+          <option value="Sports">Sports</option>
+          <option value="Arts and Theatre">Arts & Theatre</option>
+          <option value="Film">Film</option>
+          <option value="Miscellaneous">Miscellaneous</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group row justify-content-left">
+      <label class="control-label col-sm-2 offset-sm-2" for="Distance">Distance(miles)</label>
+      <div class="row" style="margin: 0px;">
+        <div class="col-sm-6">
+          <input type="text" class="form-control" id="Distance" placeholder="10" value="0" formControlName="Dist"
+            name="Distance" ng-model="user.Distance">
+        </div>
+        <div class="col-sm-6">
+          <select class="form-control" id="metric" ng-model="user.metric" formControlName="Met">
+            <option [selected]="true" value="miles">Miles</option>
+            <option value="km">Kilometers</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row justify-content-left required mb-0">
+      <label class="control-label col-sm-2 offset-sm-2" for="location_cur">From</label>
+      <div class="col-sm-4">
+        <label><input type="radio" (change)="disableField(true)" class="" name="location" id="location_cur"
+            value="location_cur" ng-model="location" ng-checked="1" checked> Current location</label>
+
+        <label class="col-sm-2 d-block" for="location_cur"></label>
+
+        <label><input type="radio" (change)="disableField(false)" class="" name="location" id="location_oth"
+            value="location_oth" ng-model="location"> Other, Please specify:</label>
+      </div>
+    </div>
+    <div class="form-group row justify-content-left ml-2 mt-0">
+      <label class="control-label col-sm-2 offset-sm-2" for="location_cur"></label>
+      <div class="col-sm-6">
+        <input type="text" formControlName="typed_loc" for="validationCustom03" value="" class="form-control"
+          placeholder="" id="location_oth_t"
+          [ngClass]="{'is-invalid':(field_disabled ==false&&take_loc==true)||(formdata.value.typed_loc=='')}">
+        <div class="invalid-feedback">
+          Please enter a location.
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="control-label offset-sm-2 mb-4 mx-0">
+        <button [disabled]="checkLoc()" id="Search" type="submit" class="btn btn-primary mr-2 ml-4"
+          ng-disabled="user.Keyword=='' || (location=='location_oth' && location_oth_t.length )|| (location=='location_cur' && cur_content==undefined) || (search_form.keyword.$dirty && search_form.keyword.$invalid) ">
+          <i class="fa fa-search"></i><span class="bi-search"></span> Search</button>
+        <button type="button" (click)="clearData()" class="btn btn-default ml-2 bg-color-class"><span
+            class="material-icons align-text-bottom icons-height">
+            clear_all
+          </span>
+          Clear
+        </button>
+
+      </div>
+    </div>
+  </form>
+</div>
+<div class="container main_buttons mx-auto my-3">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs nav-pills mx-auto " style="border-bottom:0px;" role="tablist">
+    <li class="nav-item ml-auto" role="presentation">
+      <button class="nav-link no-bg-color active ml-auto mr-2" href="#results" aria-controls="home" role="tab"
+        data-toggle="tab" (click)="table_active = true;fav_active=false">Results</button>
+    </li>
+    <li role="presentation" class="  active mr-auto ml-2">
+      <button class="nav-link mr-auto no-bg-color" href="#favs" role="tab" data-toggle="tab"
+        (click)="fav_active = true;table_active = false;">Favourites</button>
+    </li>
+  </ul>
+</div>
+
+<br>
+<div class="container" *ngIf="!isDataFetched && displayProgressbar">
+  <div class="progress">
+    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 50%" aria-valuenow="50"
+      aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+</div>
+<div *ngIf="signal" class="container">
+  <div class="alert alert-warning" role="alert">
+    No Records.
+  </div>
+</div>
+<div *ngIf="table_active && !fav_active && isDataFetched&& !signal">
+  <app-events-table [table_data]="table_data"></app-events-table>
+</div>
+<div *ngIf="fav_active && !table_active">
+  <app-favourites></app-favourites>
+</div>
+</div>

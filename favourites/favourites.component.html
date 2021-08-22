@@ -1,0 +1,41 @@
+<div *ngIf="!hideTable">
+  <div id="table" [@slide1] class="container">
+    <table class="table table-hover" *ngIf="!signal">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Event</th>
+          <th>Category</th>
+          <th>Venue Info</th>
+          <th>Favourite</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of favdata;let i = index">
+          <td>{{i+1}}</td>
+          <td>{{ data.date }}</td>
+          <!-- <td><a (click)="Slide_Left(data.id, data.artist, data.venue);" href="#">{{ data.event }}</a></td> -->
+          <td>
+            <div *ngIf="data.event.length > 35" matTooltip="{{data.event}}" matTooltipPosition="below"><a href="#"
+              (click)="Slide_Left(data.id, data.artist, data.venue);">{{getEventName(data.event)}}</a></div>
+          <div *ngIf="data.event.length <= 35"><a href="#"
+              (click)="Slide_Left(data.id, data.artist, data.venue);">{{data.event}}</a></div>
+          </td>
+          <td>{{ data.genre }}</td>
+          <td>{{ data.venue }}</td>
+          <td><button (click)="delete_item(data.id)" ng-show="isFavorite()"
+              style="border: none;background: transparent;"><span class="material-icons">delete</span></button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="signal" class="alert alert-warning" role="alert">
+      No Records.
+    </div>
+  </div>
+</div>
+<div *ngIf="spotifyloaded" [@slide2]>
+  <app-event-details [event_data]="event_data" [spotify_data]="spotify_data" [venue_data]="venue_data"
+    [showDetails]="hideTable" [slideDetails]="slideStart" (slideChange)="slideChangedHandler($event)">
+  </app-event-details>
+</div>

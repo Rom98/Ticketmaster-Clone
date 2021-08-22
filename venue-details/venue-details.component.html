@@ -1,0 +1,41 @@
+<div id="venue_details" class="container" *ngIf="venue_data!=undefined">
+  <div *ngIf="venue_data.results.length == 0" class="alert alert-warning" role="alert">
+    No Records.
+  </div>
+  <div id="Details">
+    <table class="table ">
+      <tbody *ngIf="venue_data != undefined">
+          <tr>
+            <th scope="row">Address</th>
+            <td>{{venue_data.results[0].Address}}</td>
+          </tr>
+          <tr>
+            <th scope="row">City</th>
+            <td>{{venue_data.results[0].City}}</td>
+          </tr>
+          <tr *ngIf="venue_data.results[0].Phone">
+            <th scope="row">Phone Number</th>
+            <td>{{venue_data.results[0].Phone}}</td>
+          </tr>
+          <tr *ngIf="venue_data.results[0].Openhrs">
+            <th scope="row">Open Hours</th>
+            <td>{{venue_data.results[0].Openhrs}}</td>
+          </tr>
+          <tr *ngIf="venue_data.results[0].General">
+            <th scope="row">General Rule</th>
+            <td>{{venue_data.results[0].General}}</td>
+          </tr>
+          <tr *ngIf="venue_data.results[0].Child">
+            <th scope="row">Child Rule</th>
+            <td>{{venue_data.results[0].Child}}</td>
+          </tr>
+      </tbody>
+    </table>
+    <div class="container">
+      <agm-map [zoom]="15" [latitude]="this.venue_data.results[0].latitude" [longitude]="this.venue_data.results[0].longitude">
+        <agm-marker [latitude]="this.venue_data.results[0].latitude" [longitude]="this.venue_data.results[0].longitude"></agm-marker>
+      </agm-map>
+    </div>
+    <br>
+  </div>
+</div>

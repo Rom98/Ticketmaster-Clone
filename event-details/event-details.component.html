@@ -1,0 +1,105 @@
+<div class="container" *ngIf="slideDetails">
+  <div id="event_details" class="container" *ngIf="event_data!=undefined && showDetails" [@slide2]>
+
+    <div style="text-align: center;font-weight: bold;font-size: large;">{{event_data.results[0].Event}}</div><br>
+
+
+
+
+    <div class="d-flex position-relative w-auto">
+      <div class="ml-0 mr-auto"><button (click)="changeSlideDetails()" class="btn btn-light "><i
+            class="fa fa-chevron-left"></i> <span class="bi bi-chevron-left"></span> List</button></div>
+      <div class="mr-0 ml-auto"><a class="twitter-share-button mr-0 ml-auto"
+          href="https://twitter.com/intent/tweet?text=Check out {{event_data.results[0].Event}} located at {{event_data.results[0].Venue}}.&hashtags=CSCI571EventSearch"><input
+            type="image" src="https://csci571.com/hw/hw8/images/Twitter.png" style="width: 30px;height: 30px;"
+            name="submit" alt="submit" /></a>
+        <button class="btn btn-light mx-auto mr-0" *ngIf="!checkId(event_data.results[0].Id)"
+          (click)="add_event(event_data.results[0].Date, event_data.results[0].Event, event_data.results[0].Id, event_data.results[0].Category, event_data.results[0].Venue,event_data.results[0].Artist);"
+          style="border: none;background: transparent;">
+          <i class="material-icons" style="font-size: 30px;">star_border</i>
+        </button>
+        <button class="btn btn-light mx-auto mr-0" *ngIf="checkId(event_data.results[0].Id)"
+          (click)="add_event(event_data.results[0].Date, event_data.results[0].Event, event_data.results[0].Id, event_data.results[0].Category, event_data.results[0].Venue,event_data.results[0].Artist);"
+          style="border: none;background: transparent;">
+          <i class="material-icons" style="font-size: 30px; width:30px;" *ngIf="checkId(event_data.results[0].Id)"
+            id="star_fill">star_fill</i>
+        </button>
+      </div>
+
+
+
+      <!-- <div style="width: 30px;height: 30px;margin-left: 90%;"> -->
+
+      <!-- </div> -->
+    </div>
+
+    <ul class="nav nav-tabs justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="#Details" (click)="switch='details'"
+          [ngClass]="switch=='details'?'active':''">Event</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#spotify_details" (click)="switch='spotify'"
+          [ngClass]="switch=='spotify'?'active':''">Artist/Teams</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" (click)="switch='venue'" [ngClass]="switch=='venue'?'active':''">Venue</a>
+      </li>
+    </ul>
+    <br>
+
+
+    <div [hidden]="switch!='details'">
+      <div class="table-responsive" id="Details">
+        <table class="table table-striped">
+          <tbody *ngIf="event_data != undefined">
+            <tr *ngIf="event_data.results[0].Artist">
+              <th scope="row">Artist/Team(s)</th>
+              <td>{{event_data.results[0].Artist}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Venue</th>
+              <td>{{event_data.results[0].Venue}}</td>
+            </tr>
+            <tr *ngIf="event_data.results[0].Time">
+              <th scope="row">Time</th>
+              <td>{{event_data.results[0].Time}}</td>
+            </tr>
+            <tr *ngIf="event_data.results[0].Category">
+              <th scope="row">Category</th>
+              <td>{{event_data.results[0].Category}}</td>
+            </tr>
+            <tr *ngIf="event_data.results[0].Price">
+              <th scope="row">Price Range</th>
+              <td>{{event_data.results[0].Price}}</td>
+            </tr>
+            <tr *ngIf="event_data.results[0].TicketStatus">
+              <th scope="row">Ticket Status</th>
+              <td>{{event_data.results[0].TicketStatus}}</td>
+            </tr>
+            <tr>
+              <th scope="row">Buy Ticket At</th>
+              <td><a href="{{event_data.results[0].BuyTicketAt}}" target="_blank">Ticketmaster</a></td>
+            </tr>
+
+
+            <tr>
+              <th scope="row">Seat Map</th>
+              <!-- <td><a href="{{event_data.results[0].SeatMap}}" target="_blank">View Seat Map Here</a></td> -->
+              <td><a (click)="openImage(event_data.results[0].SeatMap)" href="#">View Seat Map Here</a></td>
+            </tr>
+
+          </tbody>
+        </table>
+        <br>
+      </div>
+    </div>
+    <div [hidden]="switch!='spotify'">
+      <app-spotify-details [spotify_data]="spotify_data" [table_data]="table_data"></app-spotify-details>
+    </div>
+    <div [hidden]="switch!='venue'">
+      <app-venue-details [venue_data]="venue_data"></app-venue-details>
+    </div>
+  </div>
+
+</div>

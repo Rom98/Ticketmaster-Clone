@@ -1,0 +1,58 @@
+<div class="container">
+<div *ngIf="!hideTable"  class="container mx-auto px-0">
+  <div id="table" [@.disabled]="isAnimationDisabled" [@slide1]
+    *ngIf="table_data.results != undefined && !slideStart">
+    <div class="d-flex position-relative w-auto">
+      <div class="mr-0 ml-auto mb-2"><button class="btn no-bg-color " [disabled]="previousID == ''"
+        (click)="Slide_Left(previousID, previousArtist, previousVenue)">Details <i
+        class="fa fa-chevron-right"></i><span class="bi bi-chevron-right"></span></button>
+      </div>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Event</th>
+          <th>Category</th>
+          <th>Venue Info</th>
+          <th>Favourite</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of table_data.results;let i = index">
+          <td>{{i+1}}</td>
+          <td>{{ data.Date }}</td>
+          <td>
+            <div *ngIf="data.Event.length > 35" matTooltip="{{data.Event}}" matTooltipPosition="below"><a href="#"
+                (click)="Slide_Left(data.Id, data.Artist, data.Venue);">{{getEventName(data.Event)}}</a></div>
+            <div *ngIf="data.Event.length <= 35"><a href="#"
+                (click)="Slide_Left(data.Id, data.Artist, data.Venue);">{{data.Event}}</a></div>
+          </td>
+          <td>{{ data.Genre }}</td>
+          <td>{{ data.Venue }}</td>
+          <td class="star-width">
+            <button class="star star-width" *ngIf="!checkId(data.Id)"
+              (click)="add_event(data.Date, data.Event, data.Id, data.Genre, data.Venue,data.Artist);"
+              style="border: none;background: transparent; ">
+              <i class="material-icons star-width">star_border</i>
+            </button>
+            <button class="star star-width" *ngIf="checkId(data.Id)"
+              (click)="add_event(data.Date, data.Event, data.Id, data.Genre, data.Venue,data.Artist);"
+              style="border: none;background: transparent; ">
+              <i class="material-icons star-width" *ngIf="checkId(data.Id)" id="star_fill">star_fill</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="spotifyloaded" [@slide2]>
+  <app-event-details [event_data]="event_data" [spotify_data]="spotify_data" [venue_data]="venue_data"
+    [showDetails]="hideTable" [slideDetails]="slideStart" (slideChange)="slideChangedHandler($event)">
+  </app-event-details>
+</div>
+</div>

@@ -1,0 +1,35 @@
+<div id="spotify_details" class="container" *ngIf="spotify_data!=undefined">
+  <div *ngIf="spotify_data.length==0" class="alert alert-warning" role="alert">
+    No Records.
+  </div>
+  <div id="Details"  *ngIf="spotify_data != undefined">
+    <table class="table ">
+      <tbody *ngFor="let data of spotify_data">
+          <tr>
+            <th colspan="2" style="text-align: center;">{{data.Name}}</th>
+          </tr>
+          <tr *ngIf="data.Name">
+            <th scope="row">Name</th>
+            <td>{{data.Name}}</td>
+          </tr>
+          <tr *ngIf="data.Followers">
+            <th scope="row">Followers</th>
+            <td>{{data.Followers}}</td>
+          </tr>
+          <tr *ngIf="data.Popularity">
+            <th *ngIf="data.Popularity != undefined" scope="row">Popularity</th>
+              <td class="position-relative">
+                <round-progress [current]="data.Popularity" [max]="100" [radius]="15" [stroke]=3 [clockwise]="false" color="#228B22"></round-progress>
+                <div class="percentageValue ml-2 ml-md-0 ">
+                  {{data.Popularity}}
+                </div>
+              </td>
+          </tr>
+          <tr *ngIf="data.Link">
+            <th scope="row">Check At</th>
+            <td><a href="{{data.Link}}" target="_blank" >Spotify</a></td>
+          </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
